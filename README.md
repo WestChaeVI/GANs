@@ -128,9 +128,6 @@ Generative Adversarial Network paper summary and implementation
   </tr>
 </table>  
 
-https://github.com/WestChaeVI/CNN-models/assets/104747868/41378ae8-7c61-4110-9751-d8949f292cee
-
-
 ------------------------------------------------------------------------------------------------------------       
 
 ## [CycleGAN(2020)](https://github.com/WestChaeVI/GAN/blob/main/CycleGAN/cyclegan.md)    
