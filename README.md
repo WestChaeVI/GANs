@@ -1,5 +1,5 @@
 # GAN
-Generative Adversarial Network paper summary
+Generative Adversarial Network paper summary and implementation
 
 ------------------------------------------------------------------------------------------------------------    
 
