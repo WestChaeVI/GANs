@@ -29,7 +29,28 @@ Generative Adversarial Network paper summary and implementation
 + beta2 : 0.9
 + **weight_cliping_limit : 0.01**
 + **lambda_gp : 10(gradient penalty**    
-![wgan_gp+celeba](https://github.com/WestChaeVI/CNN-models/assets/104747868/f2e423e4-2d7a-4cda-ae20-05e0068e93e3)
+
+<table style="margin-left: auto; margin-right: auto;">
+  <th>
+    <p align='center'>Visualization</p>
+  </th>
+  <th>
+    <p align='center'>Interpolation</p>
+  </th>
+  <tr>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/CNN-models/assets/104747868/f2e423e4-2d7a-4cda-ae20-05e0068e93e3' width='500'>
+      <p>
+    </td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/CNN-models/assets/104747868/c2e0ef8d-7125-430a-bff2-002d34ff006d' width='700' height="300">
+      <p>
+    </td>
+  </tr>
+</table>    
+
 ------------------------------------------------------------------------------------------------------------       
 
 ## [SRGAN(2017)](https://github.com/WestChaeVI/GAN/blob/main/SRGAN/srgan.md)    
