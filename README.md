@@ -67,7 +67,7 @@ Generative Adversarial Network paper summary and implementation
 
 ## [Pix2pix(2018)](https://github.com/WestChaeVI/GAN/blob/main/PIX2PIX/pix2pix.md)    
 
-+ Dataset : [VOC2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/)
++ Dataset : [facades](https://www.kaggle.com/datasets/balraj98/facades-dataset)
 + Batch_size : 32
 + epochs : 100 
 + lambda_pixel : 100 (Loss_func_pix weights)
