@@ -18,12 +18,7 @@
 
 ## Wasserstein GAN       
 
-- No Pre-processing besides scaling to the range of tanh activation $[-1, 1]$
-- SGD with batch size of 128
-- weight init: zero-centered normal with s.t.d 0.02
-- Leaky ReLU: slope = 0.02 with leak
-- Adam Optimizer with learning rate = .0002
-  - momentum $\beta_1$ = 0.5 ($\because$ training oscillation and instability with $\beta_1$ of 0.9)    
+
 
 ------------------------------------------------------------------------------------------------   
 
