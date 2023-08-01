@@ -142,15 +142,48 @@ Generative Adversarial Network paper summary and implementation
 + lambda_cyc : 10.0
 + lambda_idt : 0.5
 
-### Test Result (Orginal - translated - reconstructed)     
+### Test Result      
 
-+ Horse to Zebra      
+<table style="margin-left: auto; margin-right: auto;">
 
-![image](https://github.com/WestChaeVI/GAN/assets/104747868/97a32236-a0c0-4ea8-b6b7-80bd8193c56f)       
-
-+ Zebra to Horse   
-
-![image](https://github.com/WestChaeVI/GAN/assets/104747868/3dfc408f-e777-40b7-ada0-06c6e6917f0b)    
-
+  <thead>
+  <th colspan='3'>Orginal - translated - reconstructed</th>
+  </thead>
+  <tbody>
+  <th style="text-align:center"> </th>
+  <th>
+    <p align='center'>Success case</p>
+  </th>
+  <th>
+    <p align='center'>Failure case</p>
+  </th>
+  <tr>
+    <td style="text-align:center">Horse to Zebra</td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/97a32236-a0c0-4ea8-b6b7-80bd8193c56f' width=400>
+      <p>
+    </td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/3990d393-a5d3-4055-a5e0-317a6c4c696c'width=400>
+      <p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center">Zebra to Horse</td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/3dfc408f-e777-40b7-ada0-06c6e6917f0b'width=400>
+      <p>
+    </td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/5003cf18-abac-49c1-9c8a-28d8c94f48a6'width=400>
+      <p>
+    </td>
+  </tr>
+  </tbody>
+</table>     
 
 ------------------------------------------------------------------------------------------------------------       
