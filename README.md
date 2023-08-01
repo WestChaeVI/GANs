@@ -132,5 +132,25 @@ Generative Adversarial Network paper summary and implementation
 
 ## [CycleGAN(2020)](https://github.com/WestChaeVI/GAN/blob/main/CycleGAN/cyclegan.md)    
 
++ Dataset : [horse2zebra](https://www.kaggle.com/datasets/balraj98/horse2zebra-dataset)  
++ Batch_size : 1    
++ epochs : 200
++ lr : 0.0002
++ beta1 : 0.5
++ beta2 : 0.999    
++ deacy_after = 100    
++ lambda_cyc : 10.0
++ lambda_idt : 0.5
+
+### Test Result (Orginal - translated - reconstructed)     
+
++ Horse to Zebra      
+
+![image](https://github.com/WestChaeVI/GAN/assets/104747868/97a32236-a0c0-4ea8-b6b7-80bd8193c56f)       
+
++ Zebra to Horse   
+
+![image](https://github.com/WestChaeVI/GAN/assets/104747868/3dfc408f-e777-40b7-ada0-06c6e6917f0b)    
+
 
 ------------------------------------------------------------------------------------------------------------       
