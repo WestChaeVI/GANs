@@ -241,9 +241,11 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
 
 
 + Eeath Mover (EM distance) = Wassertein   
-  $$W\left \( \mathbb{P},\mathbb{Q}\right \) \ = \ \inf\limits_{\gamma\in\pi\left \( \mathbb{P},\mathbb{Q}\right \)}{\int d\left \( x,y\right \)\cdot\gamma\cdot\left \( dxdy\right \)} \ = \ \inf\limits_{\gamma\in\pi\left \( \mathbb{P},\mathbb{Q}\right \)} $$
+  $$W\left \( \mathbb{P},\mathbb{Q}\right \) \ = \ \inf\limits_{\gamma\in\prod\left \( \mathbb{P},\mathbb{Q}\right \)}{\int d\left \( x,y\right \)\cdot\gamma\cdot\left \( dxdy\right \)} \ = \ \inf\limits_{\gamma\in\prod\left \( \mathbb{P},\mathbb{Q}\right \)} \mathbb{E}^{\gamma}\left \[ d(X,Y) \right \]$$
 
-
+  - $\prod\left \( \mathbb{P},\mathbb{Q}\right \)$ 는 두 확률분포의 결합확률분포의 집합, $\gamma$ 는 그 중 하나
+  - 즉, $\prod\left \( \mathbb{P},\mathbb{Q}\right \)$ 중에서 $d(X,Y)$ 의 기댓값을 가장 작게 추정한 값을 의미
+  
 
 ------------------------------------------------------------------------------------------------
 
