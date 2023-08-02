@@ -77,6 +77,29 @@ $$\max_{\theta\Theta\in\mathbb{R}^{d}}\sum_{i=1}^{m}\log P_\Theta \left ( x^{\le
 ------------------------------------------------------------------------------------------------ 
 
 ## Differnt Distances    
+
+### Concept of Distance
++ WGAN 논문에서는 4개의 거리가 등장하는데, 수식들을 설명하기에 앞서 먼저 기초적인 것들부터 짚고 넘어가보자.
+
++ 실수($R$) or 복소공간($C$) 에서는 |ㆍ|이 metric이다.
++ 유클리드 공간 ($R^{n}$) 에선 Euclidian distance가 metric이다.  $d\left ( x,y \right ) = \sqrt{\left (\sum\limits_{k=1}^{n}{|x_k - y_k |^2}  \right )}$
++ 힐베르트 공간 (Hilbert space)에서는 내적(inner product)으로 metric을 정의. $d\left ( u,v \right ) = \sqrt{\left ( u-v \right ) \cdot \left ( u-v \right )}$      
+
++ 어떤 공간에 metric 개념이 중요한 이유는 **수렴(Convergence)**이란 정의를 내릴 수 있기 때문이다.    
+$$x_n \rightarrow  x   \Leftrightarrow    \lim_{n\rightarrow\infty}{d\left (x_n,x \right )} = 0$$       
+
++ But, 한 공간에 정의할 수 있는 metric은 한가지만 있는 것이 아니다.
+
++ 예를 들어, 유클리드 공간에서는 Euclidian distance 뿐만 아니라, 맨허튼 거리 같은 다른 metric으로 거리를 정의할 수 있다.   $d\left ( x,y \right ) = \sum\limits_{k=1}^{n}{|x_k - y_k |^2}$       
+
++ 함수 공간에서는 더욱 다양하게 정의할 수 있다.     
+  - $L_{1}$ 거리 : $d_{1}{\left (f,g \right )} = \lVert f-g \rVert_{1} = \int_{x}{\|f(x) - g(x)\|}\ dx$      
+  - $L_{2}$ 거리 : $d_{2}{\left (f,g \right )} = \lVert f-g \rVert_{2} = \sqrt{ \int_{x}{\|f(x) - g(x)\|^{2}}\ dx }$     
+
+
+
+
+
     
 
 ------------------------------------------------------------------------------------------------    
