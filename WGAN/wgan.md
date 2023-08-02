@@ -1,6 +1,6 @@
 # [Wasserstein GAN (2017)](https://arxiv.org/pdf/1701.07875.pdf)    
 
-------------------------------------------------------------------------------------------------   
+------------------------------------------------------------------------------------------------     
 
 ## Motivation    
 
@@ -245,13 +245,103 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
 
   - $\prod\left \( \mathbb{P},\mathbb{Q}\right \)$ 는 두 확률분포의 결합확률분포의 집합, $\gamma$ 는 그 중 하나
   - 즉, $\prod\left \( \mathbb{P},\mathbb{Q}\right \)$ 중에서 $d(X,Y)$ 의 기댓값을 가장 작게 추정한 값을 의미
-  
+  - 직관적으로, $\gamma \left \(x,y \right \)$ 는 분포 $\mathbb{P}_r$ 를 분포 $\mathbb{P}_g$ 로 변형시키기 위해서 얼마나 많은 "질량"을 x에서 y로 운송해야 하는지를 나타낸다.
+  - EM distance는 결국 cost의 optimal를 추정하는 문제로 볼 수 있다.   
+
++ 다음 예시는 확률 분포의 간단한 sequence가 EM distance 하에서 얼마나 명백하게 수렴하고 다른 distance와 divergence 하에서는 수렴하지 않는지를 보여준다.    
+  - (수평선을 학습하는 경우) $\mathbb{Z} / ~ / \mathbb{U} \left \[ 0,1 \right \]$ 는 unit interval 하에서 균이 분포이다. $\mathbb{P_0}$ 는 $\left \( 0,\mathbb{Z} \right \) \in \mathbb{R}^2$ (0은 x축이고 random variable $\mathbb{Z}$ 는 y축)의 분포라고 가정하고, 원점을 통과하는 직선의 수직선이다. 
+
+<p align='center'>
+    <img src='https://github.com/WestChaeVI/GAN/assets/104747868/9e0c627f-1d11-49c0-9091-4e839c28e8ca' >
+<p>
+
+  - $g_\theta \left \( z\right \) \left \( \theta, z \right \)$ 라고 하고 $\theta$는 single real parameter이다.
+
+  - $\theta_t \ \rightarrow \ 0$ 일 때, sequence  $\left \( \mathbb{P}_{\theta_t} \right \)$<sub>$t\in\mathbb{N}$</sub>    는 distance 하에서 $\mathbb{P}_0$ 으로 수렴하지만, JS, KL, reverse KL, TV 하에서는 수렴하지 않는다.    
+  아래 그림 **Figure 1** 은  EM과 JS 의 경우에 대해 이를 나타낸다.    
+
+<p align='center'>
+    <img src='https://github.com/WestChaeVI/GAN/assets/104747868/1e98b918-6cc3-4c55-a1e8-340f0eb03931' >
+<p>
+
+  - Figure 1을 살펴보면, JS divergence의 경우 대부분의 케이스에서 값이 같으므로, 적절한 gradient 값을 얻기가 어렵다.
+  - 반면에, EM distance의 경우 대부분의 케이스에서 유의미한 gradient 값을 얻을 수 있게 된다.     
+
+  - Example 1은 EM distance에 대해서 gradient descent를 진행함으로써 저차원의 manifold에 대한 확률 분포를 학습할 수 있는 케이스를 우리에게 제공한다.
+  - Wasserstein distance가 JS divergence에 비해서 훨씬 약하기 때문에, 가벼운 Assumption 하에서도  $W\left \( \mathbb{P}_r , \mathbb{P}_{\theta}\right \)$ 가 $\theta$ 에 대한 연속형 loss function 인지 아닌지에 대한 질문을 던져볼 수 있다. **결론은 True이다.**
+
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/fea38990-6a67-4561-aeb8-36ee16a95f73)
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/aaf32567-be95-4766-9fb1-aab91f6038a0)
+
+  - Assuption 1에서 **'locally Lipschitz'**라고 하는 내용이 있다. [Lipschitz 설명](en.wikipedia.org/wiki/Lipschitz_continuity)   
+
+  - Lipschitz function이라는 것은 얼마나 빨리 변화할지가 제한된 함수라는 것이다.     
+  - 그리고 그 bound의 가장 가장 작은 값이 Lipschitz constant라는 것이다.   
+  - 즉, 어떤 함수가 Lipschitz constant라는 값보다 항상 변화율이 작아야 하는 것.     
+
+  - Assuption 1은 이 Lipschitz constant의 기댓값이 무한대보다 작은 경우 g라는 함수가 다음 가정을 만족한다고 적혀있다.
+    > 변화율을 어느 특정 임계치보다 작게 한다는 것은 아무래도 gradient가 과하게 변하는 상황을 방지하는 의미 같다.    
+    > 쓸모 있는 gradient를 얻을 수 있게 한다고 생각하면 될 것 같다.     
+
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/24918168-d78a-4007-9e31-a6928d187280)
+
+  - $z$ 에 대한 prior $p(z)$ 에 대해서 이에 대한 distance의 기댓값이 무한대보다 작으면, 아까 얘기했던 locally lipschitz 조건을 만족시키게 되고, Wasserstein distance가 모든 곳에서 연속이고 거의 모든 곳에서 미분 가능하다는 내용이다.   
+
+  - 이 모든 것들은 EM distance가 JS divergence에 비해서 우리 문제에 대해 훨씬 더 민감한 cost function이라는 것을 보인다.   
+
+  - 다음 theorem은 이러한 distance와 divergence에 의해서 유도되는 위상의 상대적 강함을 묘사하며, KL이 가장 강력하고, 그 다음으로는 JS, TV, EM이 가장 약하다.  
+
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/138610d6-8dc6-4382-8661-2ef4246ff975)    
+  - 이는 KL, JS, TV distance가 low dimension의 manifold에 의해서 support 받는 분포를 학습할 때 cost function이 아니라는 사실을 강조한다.   
+    하지만, EM distance는 이러한 환경에서 민감하다.     
 
 ------------------------------------------------------------------------------------------------
 
 ## Wasserstein GAN       
 
+  + Theorem 2는 최적화가 이루어질 때 Wasserstein distance가 JS divergence에 비해서 더 좋은 특성을 가진다는 사실을 가리킨다.  
 
+  + 하지만, EM distance의 하한 중 가장 큰 값(supremum)은 계산하기 매우 어렵다.     
+    반면에, kantorovich-Rubinstein duality는 다음을 설명한다.     
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/6856f15f-c3c2-42c0-915d-73f3c740a890)    
+  + 그리고 이 식을 우리가 만약 어떤 $K$ 에 대해서 $K$ - Lipschitz를 만족하는 parameterized family of functions을 가지고 있다면 다음과 같이 변경할 수 있다고 한다.    
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/36c30fcc-a736-4d81-b858-7325bb50982d)    
+  + 이 문제에 대한 solution $f : x \rightarrow \mathbb{R}$ 을 다음과 같이 구할 수 있다.   
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/3bbb4483-5fb8-42c1-8b7c-0e085897c451)     
+  + 이제 equation (2)에 있던 최대화 문제를 해결하는 함수 $f$ 를 찾는 문제에 도달한다.    
+
+  + 이를 대략 근사하기 위해서, 우리가 할 수 있는 것은 compact space $W$에 놓여있는 가중치 $w$ 를 파라미터로 가지는 neural network를 학습시키는 것으로,    
+    그리고 나서 $\mathbb{E}$<sub>$z \sim p(z)$</sub> ${\left \[ \bigtriangledown_\theta {f_w}\cdot g_\theta \left \( z \right \) \right \]}$ 을 통해서 backprop을 한다. 이 과정은 일반적인 GAN을 가지고 수행한다.   
+
+  + $W$이 compact라는 사실은 모든 function $f_w$가 개별 가중치가 아닌 $W$에만 의존하는 일부 $K$에 대한 $K$-Lipschitz일 것 같이라고 암시하므로 (2)를 관련없는 scaling factor와 critic $f_w$의 용량까지 근사한다.    
+
+  + Parameters $w$가 compact space에 놓이도록 하기 위해서(어떤 경계 안에 들어오게 하기 위해서), 우리가 할 수 있는 간단한 무언가는 각 gradient update 이후에 가중치들을 fixed box (예를 들어, $W = \left \[-0.01, 0.01 \right \]^{l}$ 에 고정시키는 것이다.    
+
+  + Weight clipping은 Lipschitz constraint를 강제하기 위해서 명백하게 끔찍한 방법이다.   
+    > 만약 clipping parameter가 크면, 어떤 가중치는 이들의 limit까지 도달하는데에 오랜 시간이 걸릴 수 있으며, critic을 최적점까지 학습시키기 어렵게 만든다.   
+    > 만약 clipping parameter가 작으면, 이는 layer 수가 적을 때 혹은 batch normalization이 사용되지 않았을 때 vanishing gradient로 이끌기 쉬울 수 있다. 
+
+  + 저자는 거의 차이가 없는 간단한 변형을 가지고 실험했으며, 단순성과 이미 좋은 성능을 내는 것 때문에 weight clipping을 고수하기로 했다.
+    > 대신, 신경망 환경에서 Lipschitz constraints를 강제하는 주제를 추가적인 future work로 남겼다.   
+
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/0283b654-de3b-459a-a6df-ef7bace1ef86)     
+  + EM distance가 연속적이고 미분 가능하다는 사실은 우리가 critic을 최적성까지 훈련시킬 수 있다는 사실을 의미한다.
+
+  + 즉, 우리가 더 많이 critic을 학습시킬수록 더 신뢰할 만한 Wasserstein의 gradient를 얻게 되며, 이는 **Wasserstein의 거의 모든 곳에서 미분 가능하다는 사실**에 의해 실제로 유용하다.
+
+  + JS의 경우에, discriminator가 더 나은 gradients을 얻을수록 더 신뢰할 만한 gradient을 얻게 되지만, JS가 locally saturated이기 때문에 true gradient는 0이고 **vanishing gradient을 얻게 된다**.
+
+  + Figure 2에서 이 개념의 증명을 볼 수 있으며, 여기서 저자는 GAN discriminator와 WGAN critic을 최적성까지 학습하였다.   
+
+![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/03af3fc2-93ab-447a-a19e-74d218d012d4)      
+  + Discriminator는 fake와 real 사이를 구별하기 위해 아주 빠르게 학습하며, 예상되듯이 신뢰할 만한 gradient information을 제공하지 못한다.
+    > 기울기 거의 무한대이거나 0에 가깝다.   
+
+  + 하지만 critic은 **saturate** 되지 않으며 모든 곳에서 현저하게 명백한 gradient를 제공하는 **linear function**으로 수렴한다.
+
+  + 가중치를 제한한다는 사실은 공간의 서로 다른 부분에서 함수의 가능한 성장을 최대 선형으로 제한하며, 이는 최적의 critic이 이러한 행동을 하도록 강제한다.
+
+  + 더 중요한 점은, critic을 최적점까지 학습할 수 있다는 사실은 학습할 때 modes가 붕괴(collapse)되는 것을 불가능하게 만든다.
 
 ------------------------------------------------------------------------------------------------   
 
