@@ -15,8 +15,8 @@
 
 ## Introduction    
 
-+ 본 연구에서 관심을 가지는 문제는 비지도 학습이다.
-{d}}
++ 본 연구에서 관심을 가지는 문제는 비지도 학습이다.   
+
 + 확률 분포를 학습한다는 것은 무엇을 의미하는 것일까??
   - 고전적인 정답은 확률 밀도를 학습하는 것이다.
   - 이는 종종 밀도의 parametric family $(P_\Theta)$<sub>$\Theta\in\mathbb{R}^{d}$</sub> 을 정의함으로써 이루어지며, 우리 데이터에 대한 likelihood를 maximize하는 parameter를 찾게된다.
