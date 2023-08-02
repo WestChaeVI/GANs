@@ -74,18 +74,16 @@ $$\max_{\theta\Theta\in\mathbb{R}^{d}}\sum_{i=1}^{m}\log P_\Theta \left ( x^{\le
   GANs에서 주로 발생하는 mode dropping phenomenon 또한 매우 줄어든다. WGANs의 가장 주목할만한 실질적 이득은 discriminator를 학습시킴으로써 EM distance를 optimal까지 끊임없이 추정할 수 있는 능력이다.    
   이러한 학습 curve를 그리는 것은 hyperparameter search와 디버깅에 유용할 뿐만 아니라 관측되는 sample quality와 현저하게 correlation이 있다.    
 
------------------------------------------------------------------------------------------------- 
+------------------------------------------------------------------------------------------------  
 
-## Differnt Distances    
-
-### Concept of Distance
+## Concept of Distance
 + WGAN 논문에서는 4개의 거리가 등장하는데, 수식들을 설명하기에 앞서 먼저 기초적인 것들부터 짚고 넘어가보자.
 
 + 실수($R$) or 복소공간($C$) 에서는 |ㆍ|이 metric이다.
 + 유클리드 공간 ($R^{n}$) 에선 Euclidian distance가 metric이다.  $d\left ( x,y \right ) = \sqrt{\left (\sum\limits_{k=1}^{n}{|x_k - y_k |^2}  \right )}$
 + 힐베르트 공간 (Hilbert space)에서는 내적(inner product)으로 metric을 정의. $d\left ( u,v \right ) = \sqrt{\left ( u-v \right ) \cdot \left ( u-v \right )}$      
 
-+ 어떤 공간에 metric 개념이 중요한 이유는 **수렴(Convergence)**이란 정의를 내릴 수 있기 때문이다.    
++ 어떤 공간에 metric 개념이 중요한 이유는 **수렴(Convergence)** 이란 정의를 내릴 수 있기 때문이다.    
 $$x_n \rightarrow  x   \Leftrightarrow    \lim_{n\rightarrow\infty}{d\left (x_n,x \right )} = 0$$       
 
 + But, 한 공간에 정의할 수 있는 metric은 한가지만 있는 것이 아니다.
@@ -96,13 +94,158 @@ $$x_n \rightarrow  x   \Leftrightarrow    \lim_{n\rightarrow\infty}{d\left (x_n,
   - $L_{1}$ 거리 : $d_{1}{\left (f,g \right )} = \lVert f-g \rVert_{1} = \int_{x}{\|f(x) - g(x)\|}\ dx$      
   - $L_{2}$ 거리 : $d_{2}{\left (f,g \right )} = \lVert f-g \rVert_{2} = \sqrt{ \int_{x}{\|f(x) - g(x)\|^{2}}\ dx }$     
 
+<table style="margin-left: auto; margin-right: auto;">
+  <th>
+    <p align='center'>$L_{2}$ Convergence</p>
+  </th>
+  <th>
+    <p align='center'>$L_{\infty}$ Uniformly Convergence</p>
+  </th>
+  <tr>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/664e8110-12c7-4d72-9e46-cc6b5ed98557'>
+      <p>
+    </td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/35c024e7-8443-44e8-9680-149f1b1a2bd4'>
+      <p>
+    </td>
+  <tr>
+    <td>
+      <p align='center'>$f_n$과 $f$의 차이를 제곱해서 적분한 값이 0으로 수렴하게 만들 수 있으면 $L_{2}$ - 수렴<p>
+      <p align='center'>$\lVert f_n-f \rVert_{2} = \sqrt{ \int_{a}^{b}{\|f_n - f\|^{2}}\ dx } \rightarrow 0$ (수렴)<p>
+    </td>
+    <td>
+      <p align='center'>$f_n$이 $f$로 모든 $x$에 대해서 $\epsilon$ 범위 안에 들어오면서 수렴하게 만들 수 있으면 $L_{\infty}$ - 수렴 또는 균등수렴(uniformly convergence)<p>
+      <p align='center'>$\lVert f_n-f \rVert_{\infty} =  \sup\limits_{x\in[a,b]}{\|f_n - f\|}  \rightarrow 0$<p>
+    </td>
+  </tr>
+  </tr>
+</table>    
 
++ 즉, 전달하고 싶은 말은 **거리함수가 바뀌면, 수렴방식이 바뀔 수 있다는 것**이다.    
 
++ WGAN 논문은 분포수렴과 동등한 Wasserstein distance를 다룬다. 이 metric은 **확률분포**들의 공간에서 정의된다.    
 
++ $\chi$ : Compact metric set    
+  - Definition : A topology space $\chi$ is called compact if each of its open covers has a finite subcover.    
+  > Heine - Borel 정리를 이용해 해석하면, $\chi$가 compact라는 것은 *1) 경계가 있고*, *2) 동시에 경계를 포함*한다는 집합이다.    
 
-    
+<table style="margin-left: auto; margin-right: auto;">
+  <th>
+    <p align='center'>1) 경계가 있다 (bounded)</p>
+  </th>
+  <th>
+    <p align='center'>2) 경계를 포함한다 (closed)</p>
+  </th>
+  <tr>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/fda694eb-1df8-4922-b60c-45aae693df00' width=400, height=300>
+      <p>
+    </td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/dbbc7f6d-d594-4ed5-bc56-94b4f29d1594'width=400, height=300>
+      <p>
+  <tr>
+    <td>
+      <p align='center'>경계가 있다는 것은 무한대로 뻗지 않는다는 것을 의미. 집합 안의 아무 점에서나 적당한 거리 안에 $\chi$의 모든 원소가 들어오면 된다.<p>
+    </td>
+    <td>
+      <p align='center'>어떤 집합의 경계를 포함한다는 것은 풀어서 표현하면 극한점(limit point)을 모두 포함한다라고 설명한다. 즉, $x_{\infty}$ 같은 극한점들이 $\chi$의 원소라는 것.<p>
+    </td>
+  </tr>
+  </tr>
+</table>  
+
++ 저자들이 compact 집합을 가져온 것은 수학적인 이유 때문이다.    
+  - 최대ㆍ최소 정리 : 연속함수들이 항상 max, min 값을 가진다.   
+  - 모든 확률변수 x에 대해 조건부 확률분포가 잘 정의된다.   
+  - 완비공간(complete space)이다.   
+
++ $\sum$ : set of all the **Borel subsets of $\chi$**
+  - Borel set은 $\chi$ 내에서 측정가능한(measurable)한 집합들을 말한다.
+  - 측정가능이라함은 $\mathbb{P}_r$ , $\mathbb{P}_g$ 같은 확률분포로 확률값이 계산 가능한 집이다. $\rightarrow$ 연속함수의 기댓값을 계산하기 위한 수학적인 최소조건이 된다.
+  - 사실 눈으로 관찰할 수 있는 집합들은 대게 측정가능한 집합들이다.(**측정불가능한 집합들은 컴퓨터로 나타내는게 불가능**)      
+
++ $Prob\left (\chi \right )$ denote the space of probability measures on $\chi$
+
++ 참고로 논문을 읽다보면 $\inf$ 와 $\sup$ 이라는 용어들이 튀어나온다.
+  - $\inf A $= max{lower bound of A}
+  - infimum 은 the greatest lower bound 라고 부른다. 즉, 하한(lower bound) 중 가장 큰 값(maximum)
+  
+  - $\sup A $= min{upper bound of A}
+  - Supremum 은 the least upper bound 라고 부른다. 즉, 상한(upper bound) 중 가장 작은 값(minimum)
+
++ 이 개념들이 필요한 이유는 모든 집합이 최소값(혹은 최대값)을 가지지 않지만 $\sup$ $\inf$ 는 **항상 존재하기 때문**이다.     
+$$A = \left \[ {1} , \frac{1}{2} , \frac{1}{3} , ... \right \] \ \inf A = 0 \ , \ min \ A = \ \?$$
+
 
 ------------------------------------------------------------------------------------------------    
+
+## Differnt Distances   
+
++ Total Variation (TV distance)   
+
+  - 빨간색 A의 영역 안에 있는 A들을 대입했을 때, $\mathbb{P}_r \left \( A \right \)$ 와 $\mathbb{P}_g \left \( A \right \)$ 의 값의 차이 중 가장 큰 값을 뜻함.    
+  - Total Variation 은 두 확률측도의 측정값이 벌어질 수 있는 값 중 가장 큰 값(supremum) 을 말한다.    
+    
+
+$$\delta{ \left \( \mathbb{P}_r , \mathbb{P}_g \right \) } = \sup{A\in\sum}\|{\mathbb{P}_r \left \( A \right \) - \mathbb{P}_g \left \( A \right \)}\|$$     
+
+
+  <p align='center'>
+  <img src='https://github.com/WestChaeVI/GAN/assets/104747868/48f3b12e-c742-458d-a272-f0d583572501'>
+  <p>     
+
+  - 같은 집합 $A$ 라 하더라도 두 확률 분포가 측정하는 값은 다를 수 있다.
+  - 이때 TV는 모든 $A\in\sum$ 에 대해 가장 큰 값을 거리고 정의한 것이다.   
+  - 만약 두 확률분포의 확률밀도함수가 서로 겹치지 않는다면, 다시 말해 확률 분포의 **support**의 교집합이 공집합이라면 TV 는 무조건 1 이다.   
+
+
+
++ Kullback - Leibler (KL divergence)   
+  - KL divergence는 정보 entropy를 이용해 두 확률분포의 거리를 계산한다.     
+$$DKL\left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \sum\{x \in X} {P_r \left \( x \right \)} \cdot  {\log \left \( \frac{P_r{\left \( x \right \)}}{P_g{\left \( x\right \)}} \right \)}$$        
+
+  - 만약 두 분포의 support 사이의 거리가 멀면 KL term이 발산한다.
+    <p align='center'>
+    <img src='https://github.com/WestChaeVI/GAN/assets/104747868/1d9179b3-ee85-492f-9f3d-97d9d6cb57c7' width = 600, height= 300>
+    <p>     
+
+  - 그 이유인즉슨 $\frac{P_r{\left \( x\right \)}}{P_g{\left \( x\right \)}}$ 에서 분자는 0보다 큰 양수인데, 분모는 0이기 때문에 발산을 하게 된다.   
+
+
++ Jensen - shannon (JS divergence)
+  - KL term은 Symmetry하지 않기 때문에 유사도를 이야기할 때 distance라고 표현하지 않는다.
+  - 이 거리 개념을 Distance Metric으로 쓸 수 있는 방법에 대해 고민하면서 나온 개념이 바로 JS divergence 이다.
+  - JS divergence는 KL term으로 표현할 수 있다.
+$$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \mathbb{P}_r || \mathbb{P}_m \right \) + \frac{1}{2}KL \left \( \mathbb{P}_g || \mathbb{P}_m \right \) \ , \ where \ \mathbb{P}_m = \frac{\mathbb{P}_r + \mathbb{P}_g}{2}$$    
+
+  - $P_m \ = \ 0$ 이면  $P_r \ = \ P_r \ = \ 0$ 이기 때문에 **발산할 일은 없다**.     
+  - 하지만 두 분포의 support가 겹치지 않는다면   
+    > $\mathbb{P}_g{\left \( x\right \)} \ \neq \ 0 \ \rightarrow \ \mathbb{P}_r{\left \( x\right \)} \ = \ 0$
+    > $\mathbb{P}_r{\left \( x\right \)} \ \neq \ 0 \ \rightarrow \ \mathbb{P}_g{\left \( x\right \)} \ = \ 0$   이기 때문에
+    <p align='center'>
+    <img src='https://github.com/WestChaeVI/GAN/assets/104747868/71459317-6d42-460a-9a36-b5f6a2df25c8' width = 800, height= 200>
+    <p>   
+  - **발산하지는 않지만 상수인 $\log{2}$ 로 고정되어 버리니 "얼마나 먼지"에 대한 정보를 줄 수 없는 것이다.**
+  - 이런 일이 일어나는 이유는 TV나 KL, JS 은 두 확률분포 $\mathbb{P}_r$ , $\mathbb{P}_g$ 가 서로 다른 영역에서 측정된 경우     
+    '완전히 다르다'고 판단을 내리게끔 metric이 계산되기 때문이다.
+  - $\rightarrow$ 즉, 두 확률분포의 차이를 명탐정처럼 깐깐하게(harsh) 본다는 것.     
+  - 이게 상황에 따라 유리할 수도 있겠지만, GAN에서의 discriminator의 학습이 잘 죽는 원인이 된다. (Martin의 정리)  
+  - 그래서 GAN의 학습에 맞게 조금 유연하면서도 수렴(convergence)에 focus를 맞춘 다른 metric이 필요. $\rightarrow$  **WGAN의 motivation**
+
+
++ Eeath Mover (EM distance) = Wassertein   
+  $$W\left \( \mathbb{P},\mathbb{Q}\right \) \ = \ \inf\limits_{\gamma\in\pi\left \( \mathbb{P},\mathbb{Q}\right \)}{\int d\left \( x,y\right \)\cdot\gamma\cdot\left \( dxdy\right \)} \ = \ \inf\limits_{\gamma\in\pi\left \( \mathbb{P},\mathbb{Q}\right \)} $$
+
+
+
+------------------------------------------------------------------------------------------------
 
 ## Wasserstein GAN       
 
