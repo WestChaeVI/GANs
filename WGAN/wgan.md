@@ -25,7 +25,7 @@
 
 + 즉, 만약 우리가 실제 데이터 $\{ {x^{(i)}} \}_{i=1}^{m}$ 를 가지고 있을 때, 우리는 다음 문제를 해결하는 것이다.    
 
-$$\max_{\theta\Theta\in\mathbb{R}^{d}}\sum_{i=1}^{m}\log P_\Theta \left ( x^{\left ( i \right )} \right ) $$       
+$$\max_{\theta\Theta\in\mathbb{R}^{d}}\frac{1}{m}\sum_{i=1}^{m}\log P_\Theta \left ( x^{\left ( i \right )} \right ) $$       
 
 
 + 만약 실제 데이터 분포 $p_r$가 밀도를 나타내고 $p_\Theta$ 가 parametrized density $P_\Theta$의 분포라면,    
