@@ -7,11 +7,11 @@
 
 + SR 분야에서 기존 방법들이 가진 단점들이 보이기 시작
   - 논문이 발표된 2017년을 기준으로 SR(Super-Resolution)분야에서 CNN이 다양하게 활용되고 있었다.
-  - 하지만 Upsacle Factor가 큰 경우에 **미세한 질감(finer texture details**을 복구하는데 어려움이 있다는 문제점이 존재했다
-  - 그 이유는 바로 기존 모델들이 사용하는 **목적함수 (Objective function)**에 있었다.  
+  - 하지만 Upsacle Factor가 큰 경우에 **미세한 질감**(**finer texture details**)을 복구하는데 어려움이 있다는 문제점이 존재했다
+  - 그 이유는 바로 기존 모델들이 사용하는 **목적함수**(**Objective function**)에 있었다.  
 
 + 그렇다면 어떤 목적함수를 사용했길래??
-  - 초기 SRCNN을 비롯한 대부분의 모델이 목적함수로 **MSE(Mean Squared Error)**를 사용했다      
+  - 초기 SRCNN을 비롯한 대부분의 모델이 목적함수로 **MSE**(**Mean Squared Error**)를 사용했다      
 
   - **MSE**는 Pixel-wise 연산으로 **PSNR** 수치는 높게 얻을 수 있지만, 사람이 고화질이라고 느끼는 **지각적(Perceptual)** 감각을 전혀 표현할 수 없었다.      
 
@@ -185,37 +185,66 @@ edf76fb2bf55'><p>
 + 먼저, Adversarial Loss는 일반적인 GAN에서 생성자의 Loss 함수 공식과 동일하다. 
   - 형태를 보면 Discriminator의 목적함수에서 뒷부분만 차용한 형태이다.   
   - Generator는 진짜 같은 가짜 이미지를 만드는 것이 목표이므로 Discriminator의 목적함수에서 앞부분은 필요가 없다.   
-  - 
+  - 여기까지의 내용을 아무 의문점 없이 읽었다면 GAN에대해서 잘 알고 있거나 아니면 이해를 제대로 못한 것이다.
+  - **수식을 보면, 왜 $\log \left( 1 - D_{\theta_D} \left( G_{\theta_G} \left( I^{LR} \right) \right) \right)$ 가 아니라 $-\log D_{\theta_D} \left( G_{\theta_G} \left( I^{LR} \right) \right)$ 인지에 대해 의문을 가져야 한다.**     
 
+<table align='center'>
+  <th>
+    <p align='center'>$$\log \left( 1 - D_{\theta_D} \left( G_{\theta_G} \left( I^{LR} \right) \right) \right)$$</p>
+  </th>
+    <th>
+      <p align='center'>$$-\log D_{\theta_D} \left( G_{\theta_G} \left( I^{LR} \right) \right)$$</p>
+    </th>
+    <tr>
+    <td>
+      <p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/d9b45253-a967-46b3-b78b-3b3e4af76ad4'>    
+      </p>
+    </td>
+    <td>
+      <p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/0e661bf0-2f13-4a7f-af8a-1ed5cf7573b6'>    
+      </p>
+    </td>
+  </tr>
+</table>  
 
++ GAN의 Adversarial Loss    
+
+  수식을 편하게 쓰기 위해서 general하게 설명하겠다.    
+
+  - $D \left( G \left(z \right) \right)$ 는 0~1 값을 가지고 $D \left( G \left(z \right) \right)$ 가 1에 수렴할 때 Loss가 최소가 된다.   
+  
+  - **문제점 : 학습 초반에 $G \left(z \right)$ 가 생성해내는 가짜 이미지가 형편없다 보니 D가 확실하게 가짜 이미지라고 판별하게 된다.**    
+    > 즉, $D \left( G \left(z \right) \right) = 0$     
+    >      
+    > 자 loss함수에 등장하는 $\log \left( 1 \ - \ D \left( G \left(z \right) \right) \right)$ 의 그래프를 그려보자. (위 그림 왼쪽)   
+    >     
+    > $\log \left( 1 \ - \ D \left( G \left(z \right) \right) \right)$ 그래프에서 **$D \left( G \left(z \right) \right)$ 가 학습 초반인 0 근처일 때 학습하기에 기울기가 매우 작다.**    
+    >     
+    > **다시 말해, 학습 초반부터 학습이 잘 되지 않는 문제점이 발생한다.**
+
+  - **관점 변경 : 기울기의 절댓값을 더 크게 만들어 초반의 안좋은 상황을 G가 빨리 벗어날 수 있도록 하고 싶다.**   
+    >     
+    > $\log \left( 1 \ - \ D \left( G \left(z \right) \right) \right)$ 대신에 $-\log D_{\theta_D} \left( G_{\theta_G} \left( I^{LR} \right) \right)$ 로 바꿔서 계산한다.   
+    >     
+    > 위 그림의 오른쪽을 보면 0 근처에서의 기울기가 무한대에 가까워 빨리 벗어날 수 있다.  
+    >     
+    > **결국 같은 문제를 관점을 달리해서 해결해 나아간 것이다.**   
+
++ 다음으로 Content loss는 SRGAN에서 Generator의 목적함수에 추가된 특별한 공식이다.    
+  - $$I_{\text{VGG}/i,j}^{\text{SR}} 에서 VGG가 들어간 이유는 pre-trained model을 쓴 것을 표현한 것이다.
+  - G가 생성한 가짜 이미지와 원본 진짜 이미지(HR)를 pre-trained VGG19 model에 통과 시킨다. 물론 fc-layer 이전까지   
+  - 그러면 각각의 Feature map들을 얻을 수 있고, 이 Feature map끼리의 MSE 이다.
+  - element-wise 연산 후 제곱하여 전체 원소 개수로 평균을 구하는 형태이다.  
+  - Introduction에서 말했듯이 **간극(gap)을 줄이기 위해 G가 진짜 데이터의 표현을 잘 따라 하도록 학습이 진행된다.**   
 
 ------------------------------------------------------------------------------------------------    
 
-## Differnt Distances   
-
-### Total Variation (TV distance)   
-
-
-------------------------------------------------------------------------------------------------
-
-## Wasserstein GAN       
-
- 
-
-------------------------------------------------------------------------------------------------     
-
-## Empirical Results    
-
+## Model Architecture    
 
 
 ------------------------------------------------------------------------------------------------     
 
-### Meaningful loss metric   
-
-
-------------------------------------------------------------------------------------------------    
-
-### Improved Stability       
+## Experiments    
 
 
 
