@@ -188,26 +188,25 @@ $$A = \left \[ {1} , \frac{1}{2} , \frac{1}{3} , ... \right \] \ \inf A = 0 \ , 
 
 ## Differnt Distances   
 
-+ Total Variation (TV distance)   
+### Total Variation (TV distance)   
 
   - 빨간색 A의 영역 안에 있는 A들을 대입했을 때, $\mathbb{P}_r \left \( A \right \)$ 와 $\mathbb{P}_g \left \( A \right \)$ 의 값의 차이 중 가장 큰 값을 뜻함.    
   - Total Variation 은 두 확률측도의 측정값이 벌어질 수 있는 값 중 가장 큰 값(supremum) 을 말한다.    
     
-
 $$\delta{ \left \( \mathbb{P}_r , \mathbb{P}_g \right \) } = \sup{A\in\sum}\|{\mathbb{P}_r \left \( A \right \) - \mathbb{P}_g \left \( A \right \)}\|$$     
-
 
   <p align='center'>
   <img src='https://github.com/WestChaeVI/GAN/assets/104747868/48f3b12e-c742-458d-a272-f0d583572501'>
-  <p>     
+  <p>       
 
-  - 같은 집합 $A$ 라 하더라도 두 확률 분포가 측정하는 값은 다를 수 있다.
-  - 이때 TV는 모든 $A\in\sum$ 에 대해 가장 큰 값을 거리고 정의한 것이다.   
-  - 만약 두 확률분포의 확률밀도함수가 서로 겹치지 않는다면, 다시 말해 확률 분포의 **support**의 교집합이 공집합이라면 TV 는 무조건 1 이다.   
+  - 같은 집합 $A$ 라 하더라도 두 확률 분포가 측정하는 값은 다를 수 있다.      
+  - 이때 TV는 모든 $A\in\sum$ 에 대해 가장 큰 값을 거리고 정의한 것이다.      
+  - 만약 두 확률분포의 확률밀도함수가 서로 겹치지 않는다면, 다시 말해 확률 분포의 **support**의 교집합이 공집합이라면 TV 는 무조건 1 이다.      
 
 
 
-+ Kullback - Leibler (KL divergence)   
+### Kullback - Leibler (KL divergence)    
+
   - KL divergence는 정보 entropy를 이용해 두 확률분포의 거리를 계산한다.     
 $$DKL\left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \sum\{x \in X} {P_r \left \( x \right \)} \cdot  {\log \left \( \frac{P_r{\left \( x \right \)}}{P_g{\left \( x\right \)}} \right \)}$$        
 
@@ -219,7 +218,8 @@ $$DKL\left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \sum\{x \in X} {P_r \left
   - 그 이유인즉슨 $\frac{P_r{\left \( x\right \)}}{P_g{\left \( x\right \)}}$ 에서 분자는 0보다 큰 양수인데, 분모는 0이기 때문에 발산을 하게 된다.   
 
 
-+ Jensen - shannon (JS divergence)
+### Jensen - shannon (JS divergence)      
+
   - KL term은 Symmetry하지 않기 때문에 유사도를 이야기할 때 distance라고 표현하지 않는다.
   - 이 거리 개념을 Distance Metric으로 쓸 수 있는 방법에 대해 고민하면서 나온 개념이 바로 JS divergence 이다.
   - JS divergence는 KL term으로 표현할 수 있다.
@@ -231,7 +231,7 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
     > $\mathbb{P}_r{\left \( x\right \)} \ \neq \ 0 \ \rightarrow \ \mathbb{P}_g{\left \( x\right \)} \ = \ 0$   이기 때문에
     <p align='center'>
     <img src='https://github.com/WestChaeVI/GAN/assets/104747868/71459317-6d42-460a-9a36-b5f6a2df25c8' width = 800, height= 200>
-    <p>   
+    <p>    
   - **발산하지는 않지만 상수인 $\log{2}$ 로 고정되어 버리니 "얼마나 먼지"에 대한 정보를 줄 수 없는 것이다.**
   - 이런 일이 일어나는 이유는 TV나 KL, JS 은 두 확률분포 $\mathbb{P}_r$ , $\mathbb{P}_g$ 가 서로 다른 영역에서 측정된 경우     
     '완전히 다르다'고 판단을 내리게끔 metric이 계산되기 때문이다.
@@ -240,7 +240,8 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
   - 그래서 GAN의 학습에 맞게 조금 유연하면서도 수렴(convergence)에 focus를 맞춘 다른 metric이 필요. $\rightarrow$  **WGAN의 motivation**
 
 
-+ Eeath Mover (EM distance) = Wassertein   
+### Eeath Mover (EM distance) = Wassertein       
+
   $$W\left \( \mathbb{P},\mathbb{Q}\right \) \ = \ \inf\limits_{\gamma\in\prod\left \( \mathbb{P},\mathbb{Q}\right \)}{\int d\left \( x,y\right \)\cdot\gamma\cdot\left \( dxdy\right \)} \ = \ \inf\limits_{\gamma\in\prod\left \( \mathbb{P},\mathbb{Q}\right \)} \mathbb{E}^{\gamma}\left \[ d(X,Y) \right \]$$
 
   - $\prod\left \( \mathbb{P},\mathbb{Q}\right \)$ 는 두 확률분포의 결합확률분포의 집합, $\gamma$ 는 그 중 하나
@@ -262,7 +263,7 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
 
 <p align='center'>
     <img src='https://github.com/WestChaeVI/GAN/assets/104747868/1e98b918-6cc3-4c55-a1e8-340f0eb03931' >
-<p>
+<p>     
 
   - Figure 1을 살펴보면, JS divergence의 경우 대부분의 케이스에서 값이 같으므로, 적절한 gradient 값을 얻기가 어렵다.
   - 반면에, EM distance의 경우 대부분의 케이스에서 유의미한 gradient 값을 얻을 수 있게 된다.     
@@ -270,8 +271,12 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
   - Example 1은 EM distance에 대해서 gradient descent를 진행함으로써 저차원의 manifold에 대한 확률 분포를 학습할 수 있는 케이스를 우리에게 제공한다.
   - Wasserstein distance가 JS divergence에 비해서 훨씬 약하기 때문에, 가벼운 Assumption 하에서도  $W{ \left \( \mathbb{P}_r , \mathbb{P} _\theta \right \) }$ 가 $\theta$ 에 대한 연속형 loss function 인지 아닌지에 대한 질문을 던져볼 수 있다. **결론은 True이다.**
 
-![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/fea38990-6a67-4561-aeb8-36ee16a95f73)
-![img1 daumcdn](https://github.com/WestChaeVI/GAN/assets/104747868/aaf32567-be95-4766-9fb1-aab91f6038a0)
+<p align='center'>
+    <img src='https://github.com/WestChaeVI/GAN/assets/104747868/fea38990-6a67-4561-aeb8-36ee16a95f73' >
+<p>     
+<p align='center'>
+    <img src='https://github.com/WestChaeVI/GAN/assets/104747868/aaf32567-be95-4766-9fb1-aab91f6038a0' >
+<p>      
 
   - Assuption 1에서 **locally Lipschitz**라고 하는 내용이 있다. [Lipschitz 설명](en.wikipedia.org/wiki/Lipschitz_continuity)   
 
@@ -285,7 +290,7 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
 
 <p align='center'>
     <img src='https://github.com/WestChaeVI/GAN/assets/104747868/24918168-d78a-4007-9e31-a6928d187280' >
-<p>     
+<p>      
 
   - $z$ 에 대한 prior $p(z)$ 에 대해서 이에 대한 distance의 기댓값이 무한대보다 작으면, 아까 얘기했던 locally lipschitz 조건을 만족시키게 되고, Wasserstein distance가 모든 곳에서 연속이고 거의 모든 곳에서 미분 가능하다는 내용이다.   
 
@@ -366,7 +371,7 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
 
   + 더 중요한 점은, critic을 최적점까지 학습할 수 있다는 사실은 학습할 때 modes가 붕괴(collapse)되는 것을 불가능하게 만든다.
 
-------------------------------------------------------------------------------------------------   
+------------------------------------------------------------------------------------------------     
 
 ## Empirical Results    
 
@@ -378,25 +383,124 @@ $$JS \left \( \mathbb{P}_r || \mathbb{P}_g \right \) = \frac{1}{2}KL \left \( \m
 
 ### Meaningful loss metric   
 
++ WGAN algorithm은 각 generator update (Algorithm 1에서의 10번째 줄) 이전에 critic $f$를 상대적으로 잘 학습하도록 시도하기 때문에, 이 지점에서의 loss function은 저자가 $f$의 Lipschitz constant를 제약하는 방법과 관련되어 있는 constant factor까지의 EM distance의 추정치이다.  
 
++ 첫 번째 실험은 얼마나 이 추정치가 생성된 sample의 quality와 correlation이 있는지를 보여준다.   
+
++ Convolution DCGAN architecture 외에, generator 혹은 generator와 critic 모두를 4-layer ReLU-MLP with 512 hidden units로 교체하여 실험 진행
+
++ Figure 3,4는 모든 3개의 architecture의 WGAN training 동안의 EM distance, JS divergence 의 WGAN estimate의 변화를 보여준다.       
+
+<table style="margin-left: auto; margin-right: auto;">
+  <th>
+    <p align='center'> Figure 3 (EM estimate)</p>
+  </th>
+  <th>
+    <p align='center'> Figure 4 (JS estimate)</p>
+  </th>
+  <tr>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/e57a58d4-71e5-47bd-9850-139ee70fca74' width=400, height=400>
+      <p>
+    </td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/a96459c6-f354-4018-9d94-697de7c20b19'width=400, height=400>
+      <p>
+  <tr>
+    <td>
+      <p align='center'>Figure 3는 생성된 sample의 visual quality와 이들의 그래프가 상관관계가 있음을 명확하게 보여준다.<p>
+    </td>
+    <td>
+      <p align='center'>Figure 4는 명백하게 sample의 quality와 상관관계가 없음을 보여준다.<p>
+    </td>
+  </tr>
+  </tr>
+</table>    
+
++ 마지막으로, 높은 learning rate를 사용하거나 critic에 Adam과 같은 momentum based optimizer를 사용할 때 WGAN 학습이 불안정해질 수 있다.   
++ Critic에 사용되는 loss nonstationary 이므로, momentum 기반의 방법론들은 더 안 좋게 수행하는 것으로 보인다.   
++ 저자는 momentum이 잠재적인 원인이라고 파악했는데, 이는 loss가 상승하고 샘플이 약화될 때 Adam step과 gradient 간의 cosine 값이 일반적으로 마이너스로 변하기 때문이라고 한다.   
++ 이 cosine 값이 마이너스인 유일한 곳은 이러한 불안정한 상황들이었다.  
++ 그러므로 저자는 nonstationary problem에서도 잘 작동하는 것으로 알려져 있는 RMSProp을 사용하였다.
 
 ------------------------------------------------------------------------------------------------    
 
 ### Improved Stability       
 
++ WGAN의 이점 중 하나는 critic을 optimality까지 학습하도록 해준다는 것이다.
 
-------------------------------------------------------------------------------------------------       
++ critic이 완전 학습되었을 때, 이는 다른 신경만인 generator가 학습될 수 있도록 하는 loss를 제공한다.
 
++ 이는 우리가 실험할 때 더 이상 generator와 discriminator의 capacity를 적절하게 균형 맞출 필요가 없다는 것을 의미
+
++ critic이 더 잘할수록, generator가 학습하는 데에 사용되는 더 높은 gradient를 제공한다.     
+
+
++ 저자는 generator에 사용되는 구조를 변화시켰을 때 GAN보다도 WGAN이 더 강건하다는 것을 확인했다.  
+  - 3개의 generator 구조를 실험해서 확인함.
+
+<table style="margin-left: auto; margin-right: auto;">
+  <th>
+    <p align='center'> Figure 5 </p>
+  </th>
+  <th>
+    <p align='center'> Figure 6 </p>
+  </th>
+  <th>
+    <p align='center'> Figure 7 </p>
+  </th>
+  <tr>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/47213317-739c-4538-a6a0-7d97797296b5'>
+      <p>
+    </td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/6be4c688-faa0-4bf3-8945-467fda1b9cf9'>
+      <p>
+    </td>
+    <td>
+      <p align='center'>
+        <img src='https://github.com/WestChaeVI/GAN/assets/104747868/bd61cdac-68c7-46a3-ac28-ad9a088f73a5'>
+      <p>
+    </td>
+  <tr>
+    <td>
+      <p align='center'>Convolutional DCGAN generator<p>
+    </td>
+    <td>
+      <p align='center'>Convolutional DCGAN generator without batch normalization with 512 hidden units<p>
+    </td>
+    <td>
+      <p align='center'>4-layer ReLU-MLP with 512 hidden units<p>
+    </td>
+  </tr>
+  </tr>
+</table>     
+
++ (2)과 (3)의 경우 GAN을 이용했을 때 매우 안 좋은 성능을 내는 것으로 알려져 있다.  
+
++ 그래서 저자는 WGAN critic 이나 GAN discriminator로 convolutional DCGAN 구조를 사용했다.   
+
+------------------------------------------------------------------------------------------------      
 
 ## Conclusion & Future Work(limitation)      
 
++ 새로운 모델에서, 학습의 안정성이 향상될 수 있고 mode collapse와 같은 문제들이 사라졌고, debugging이나 hyper-parameter search에 유용하고 유의미한 학습 곡선을 제공한다는 것을 보였다.
 
++ 더불어서, 최적화 문제가 건전함을 보였으며, 분포 간의 다른 거리와의 깊은 연관성을 강조하는 광범위한 이론적인 논의도 제공되었다.
 
 ------------------------------------------------------------------------------------------------      
 
 ### 개인적으로 느낀 점   
      
-     
++ technical한 내용보다 어떻게보면 수학적인 내용들로 논문을 구성하고 있는지라..    
+  솔직히 말하자면, 논문을 완벽하게 이해했다고 한다면 거짓말이다. 추후에 **반복적으로 읽어야할 논문**이다!
+
++ 모델을 사용하는 입장에서 기억해야 할 점이라고 한다면, 먼저
 
 
 
