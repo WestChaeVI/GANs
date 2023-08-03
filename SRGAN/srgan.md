@@ -71,7 +71,7 @@ edf76fb2bf55'><p>
 
 ### 사람의 감각을 공감하고 재현할 수 있는 방법을 제안하다.    
 
-+ 따라서 저자들은 이러한 문제들을 해결하기 위해 새로운 architecture와 Loss function, 그리고 test method를 제안안했다.    
+    따라서 저자들은 이러한 문제들을 해결하기 위해 새로운 architecture와 Loss function, 그리고 test method를 제안안했다.    
 
 #### Novel Architecture : GAN을 활용한 SR 모델, *SRGAN*     
 
