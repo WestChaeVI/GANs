@@ -241,18 +241,83 @@ edf76fb2bf55'><p>
 
 ## Model Architecture    
 
+### Generator Network    
+
+<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/65813bc3-0823-4f49-b125-df2113d2660f'></p>
+
++ 4x Upscaling을 목적으로 한 Generator의 architecture이다.   
++ 중간 부분에 Residual blocks을 여러 개 중첩했다. 
+  > 3x3 Kernel을 활용하여 64개의 feature map을 추출하며, activation function으로 **PReLU**를 사용
+  >      
+  > 그리고 입력 이미지와 출력 이미지를 더해주는 Skip connection이 존재
+    
++ 모델 뒷부분에는 PixelShuffler X2 역할을 하는 block이 2개가 있습니다.    
+    > 이미지의 가로, 세로 비율을 2배로 늘려주는 역할, block이 2개니까 총 4배 upscaling  
+    >      
+    > Upscaling을 모델의 입력단이 아니라 마지막 layer에서 진행하는 이유는 **연샹량** 때문이다. 
+    >      
+    > 학습 과정 전체적으로 작은 크기의 이미지를 사용해서 연상량이 감소. 또한 filter 크기 역시 작게 활용할 수 있어서 연상량 측면에서 이점이 있다.    
+    >    
+    > PixelShuffler 방식은 [ESPCN 논문](https://arxiv.org/pdf/1609.05158.pdf)에서 더 자세히 볼 수 있다.     
+
+### Discriminator Network    
+
+<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/edc4fde0-d0a4-43dd-af3e-74b32e8dad34'></p>    
+
++ Generator와 동일하게 3x3 kernel을 사용
+
++ 특징은 2배씩 늘어나는 Feature map의 채널 개수인데, 64개로 시작하여 마지막에는 512까지 증가한다.   
+
++ Model 끝에는 Generator가 만든 이미지(SR)인지, 진짜 이미지(HR)인지 구분하기 위해 **Dense Layer**와 **Sigmoid**를 통과하도록 구성되어 있다.    
+
 
 ------------------------------------------------------------------------------------------------     
 
 ## Experiments    
 
++ 논문에서 모델을 학습시킨 방법   
 
+  1. 35만 장 정도의 ImageNet dataset을 random sampling하여 trainset으로 사용, Set5, Set14, BSD100 dataset으로 모델 성능 확인    
+  2. 저해상도 이미지(LR)는 ImageNet data 이미지(HR)를 **bicubic kernel**을 사용하여 4배(downsampling factor, r=4)만큼 축소하여 얻고, HR 이미지는 크기가 크기 때문에 96x96 크기로 **Crop**하여 사용.     
+  3. 저행상도 이미지(LR)은 \[0,1] 사이의 값으로, 고해상도 이미지는 \[-1,1] 사이의 값으로 Normalized   
+  4. Content Loss를 구하기 위해 Feature map을 산출하여 VGG Loss를 구할 때, 기존의 MSE 수치와 너무 많은 값의 차이가 발생하지 않도록 $\frac{1}{12.25}$ 를 곱해서 값을 보정해 줌.  
+  5. Adam optimizer (beta1 = 0.9) 사용   
+  6. Local Opima에 빠지지 않도록 먼저 SRResNet을 학습시키고, Generator의 가중치를 학습된 SRResNet의 가중치로 초기화.    
+  SRResNet은 백만 번의 Iteration 동안 0.0001의 학습률로 학습    
+  7. SRGAN을 학습할 때는 10만 번의 Iteration 동안 $10^{-4}$ 의 학습률로, 이후 10만 번의 Iteration에는 학습률을 $10^{-5}$ 로 낮춰서 학습.    
+  G와 D는 각각 번갈아 가면서 학습    
+
+
++ MOS(Mean Opinion Score)로 모델 성능 비교 평가   
+
+  - NN(Neraset Neighbor), Bicubic, SRCNN과 같은 오래된 모델부터 SRGAN-VGG54까지 총 12개의 다른 모델에 대해 MOS 성능 평가를 진행.    
+    > 주요 모델에 대한 설명은 아래와 같다.   
+    >    
+    > **SRResNet** : Residual Network를 SR 분야에 활용했다는 의미로 VGGNet을 의미     
+    > **SRGAN-MSE** : Content Loss로 MSE를 사용한 버전       
+    > **SRGAN-VGG22** : Content Loss를 구할 때, VGG의 **2번째 Max Pooling Layer 이전의 Feature Map**을 활용한 버전      
+    > **SRGAN-VGG54** : Content Loss를 구할 때, VGG의 **4번째 Max Pooling Layer 이전의 Feature Map**을 활용한 버전  
+    >     
+    > MOS score를 보면 역시 SRGAN의 평가가 가장 높은 것을 확인할 수 있지만, 아직 원본 이미지(HR)의 수준에는 미치진 못한 것 같다.          
+
+<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/d8236fae-f5a4-4b37-b464-5bb3c373cf62'></p>     
+
++ Generator의 성능 비교   
+  > SRGAN-VGG54 버전이 가장 미세한 질감을 잘 표현했다. 다만 이 또한 아직 원본 이미지 화질과는 차이가 있다.   
+<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/914996e9-df68-45a7-b77a-99d1524aee50'></p
 
 ------------------------------------------------------------------------------------------------      
 
 ## Conclusion & Future Work(limitation)      
 
++ Residual Network를 SR 분야에 적용하여 SRResNet을 구현했으며, 모델을 깊게 쌓음으로써 성능 향상 효과를 확인함   
++ SRResNet으로도 MSE 기반의 측정 방식에서 SOTA를 당성함   
 
++ MSE 기반 학습의 단점을 지적하고 Perceptual Loss를 도입하며 단순한 Computational efficiency가 아닌 사람이 느끼기에 좋은 고해상도, Perceptual Quality에 집중     
+
++ 참고로 저자는 이상적인 Loss function은 활용 분야마다 다르니, 자신의 분야에 맞는 적합안 Loss function을 찾는 것이 핵심이라고 말한다.  
+
++ 4x 업스케일링 분야에서 SRGAN이 SOTA를 달성했으며 원본 이미지에 근접한 이미지를 생성할 수 있음을 제시     
 
 ------------------------------------------------------------------------------------------------      
 
