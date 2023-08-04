@@ -300,11 +300,11 @@ edf76fb2bf55'><p>
     >     
     > MOS score를 보면 역시 SRGAN의 평가가 가장 높은 것을 확인할 수 있지만, 아직 원본 이미지(HR)의 수준에는 미치진 못한 것 같다.          
 
-<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/d8236fae-f5a4-4b37-b464-5bb3c373cf62'></p>     
+    > <p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/d8236fae-f5a4-4b37-b464-5bb3c373cf62'></p>     
 
 + Generator의 성능 비교   
   > SRGAN-VGG54 버전이 가장 미세한 질감을 잘 표현했다. 다만 이 또한 아직 원본 이미지 화질과는 차이가 있다.   
-<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/914996e9-df68-45a7-b77a-99d1524aee50'></p
+  > <p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/914996e9-df68-45a7-b77a-99d1524aee50'></p
 
 ------------------------------------------------------------------------------------------------      
 
@@ -323,6 +323,6 @@ edf76fb2bf55'><p>
 
 ### 개인적으로 느낀 점   
      
-
++ 생성 논문을 읽을 때마다 느끼지만 다들 다양한 접근을 시도하긴 하지만 Loss function을 customize하는 것으로 시작하는 것 같다. 
 
 
