@@ -1,5 +1,11 @@
 # [Image-to-Image Translation with Conditional Adversarial Network](https://arxiv.org/pdf/1611.07004.pdf)     
 
+------------------------------------------------------------------------------------------------------------------------------------       
+
+<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/8a7e4b9b-33b9-4c23-a590-27e7e6787b05'></p>     
+
+------------------------------------------------------------------------------------------------------------------------------------       
+
 ## Motivation     
 
 + Computer Vision에는 방대한 task들이 존재하는데, 많은 문제들을 input image를 어떠한 다른 양상의 output image로 **"Translating"** 하는 것이라 볼 수 있다.     
@@ -21,7 +27,10 @@
 
   + ex) CNN에게 pred, GT 간의 **$L_2$ distance를 학습하게 만들면 outputs을 평균화하는 방향으로 minimize 되기 때문**에 output 이미지가 **blurry** 해진다.    
 
-+ 위 두 가지 문제점에 대한 대책으로 GAN을 제안한다.  GAN은 단순히 이미미 간의 mapping을 수행하는 것 뿐만 아니라 두 확률 분포를 비슷하게 만들도록 학습되기 때문에 blurry함을 방지할 수 있다.    
++ 위 두 가지 문제점에 대한 대책으로 GAN을 제안한다.  GAN은 단순히 이미미 간의 mapping을 수행하는 것 뿐만 아니라 두 확률 분포를 비슷하게 만들도록 학습되기 때문에 blurry함을 방지할 수 있다.      
+
+------------------------------------------------------------------------------------------------------------------------------------       
+
 ## Method      
 
 ### Objective function    
@@ -95,6 +104,9 @@ $$L_{pix2pix}\left(G,D\right) = \mathbb{E}\_y \left \[ \log{D\left(x,y\right)} \
 
   3. Test 시 Dropout을 그대로 사용한다는 점과 Batch normalization 또한 train batch의 $\mu$와 $\sigma$를 사용하지 않고 test batch의 $\mu$와 $\sigma$를 사용한다는 점이다.    
 
+
+------------------------------------------------------------------------------------------------------------------------------------       
+
 ## Experiments    
 
 ### Analysis of the objective function     
@@ -164,6 +176,7 @@ $$L_{pix2pix}\left(G,D\right) = \mathbb{E}\_y \left \[ \log{D\left(x,y\right)} \
 + 저자들은 처음으로 GAN을 사용하여 성공적으로 labels을 generating 했다는 부분을 언급하고 cGAN objective function 관점에서 $L_1$ loss 보다 더 ambiguous 하여 상대적으로 discrete한 labels를 생성하는 능력이 떨어졌다라고 설명한다.     
 
 
+------------------------------------------------------------------------------------------------------------------------------------       
 
 ## 개인적으로 느낀 점    
 
