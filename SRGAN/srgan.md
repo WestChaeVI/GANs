@@ -323,6 +323,7 @@ edf76fb2bf55'><p>
 
 ### 개인적으로 느낀 점   
      
-+ 생성 논문을 읽을 때마다 느끼지만 다들 다양한 접근을 시도하긴 하지만 Loss function을 customize하는 것으로 시작하는 것 같다. 
++ 생성 논문을 읽을 때마다 느끼지만 다들 다양한 접근을 시도하긴 하지만 Loss function을 customize하는 것으로 시작하는 것 같다.   
++ 가존의 평가 지표인 PSNR이나 SSIM, 그리고 MSE Loss 등이 어떠한 문제점을 가지고 본인들이 하고자 하는 task에 맞는 perceptual Loss를 만든 것이 인상 깊었다.     
 
 
