@@ -230,30 +230,6 @@ $$L_{adv} = {\mathbb{E}}\_{x} \left \[ D_{src}\left(x\right) \right \] - {\mathb
 
 ## Experiments    
 
-+ RaFD    
-
-
 
 ## 개인적으로 느낀 점    
-
-### Test Dropout     
-
-+ Dropout를 Test 시에도 활성화된 상태로 적용한다고 하였다.     
-
-+ Generator는 학습한 뒤에도 언제든 새로운 input에 대한 sample를 생성할 수 있어야 한다.    
-
-+ 논문 초반에 저자가 강조했듯이 다양한 결과보다는 있을 법한 결과를 도출하는 것에 의의를 두었기 때문에     
-
-+ 따라서, Dropout을 test시에도 활성화해 놓으면 Generator가 새로운 입력에 대해 더 일반화된 결과를 생성할 수 있기 때문이지 않을까라는 개인적인 생각이다.     
-
-
-### Test Batch Normalization     
-
-+ Test 시에 test batch의 평균과 분산을 이용해서 진행한다고 하였다.     
-
-+ Batch Normalization이 모델의 성능을 향상시키고 일반화를 돕는데,      
-
-+ 학습된 모델이 test 시에도 일관된 예측을 내놓기 위해서는 해당 batch의 평균과 분산을 사용하는 것이 맞다고 생각한다.    
-
-+ 즉, test 시에 전체 학습 데이터셋의 평균, 분산을 사용하지 않는 이유는 모델의 일반화 능력을 유지하는 데에 있어서 현재 입력에 대한 통계정보가 더 중요하다 생각하지 않았을까 생긱이 든다.      
 
