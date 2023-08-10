@@ -169,7 +169,33 @@ $$\tilde{c} = \left\[c_1, ..., c_n, m \right\]$$
   - categorical attributes에 대해서는 one-hot vector로 표현될 수 있다.     
   - 남은 n-1개의 알려지지 않은 라벨에 대해서는 zero값으로 지정한다.    
 
-+ 이 논문의 실험에서는 CelebA와 RaFD dataset을 사용하였으므로 $n = 2$가 된다.    
++ 이 논문의 실험에서는 CelebA와 RaFD dataset을 사용하였으므로 $n = 2$가 된다.      
+
+#### 좀 더 직관적으로 들어가보자.    
+  > <p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/56b25c22-37df-486b-aaf1-fcfe3602d18d'width='500'></p>      
+  >       
+  > CelebA 이미지를 학습한다고 가정해보자 (아래 그림 우측 상단)    
+  >       
+  > 그러면, Mask vector를 $\left\[CelebA, RaFD \right\] = \left \[ 1, 0 \right \]$으로 할당해주고 RAFD에 대한 label vector로 만들어줌으로써 CelebA에 대한 label만 활성해준다.    
+  >      
+  > **이떄, 학습을 진행하면서 얻은 Loss의 Gradient는 RaFD label로는 backword를 수행하지 않는다.**    
+
++ Discriminator $D$    
+  + Label prediction in $D$     
+    > 학습 도중에는 $D$의 입장에서 input real image의 **CelebA label**(**좌측 상단의 노란색 $\left\[0, 0, 1, 0, 1\right\]$**)을 받아 해당 label로 예측하게끔 Loss로부터 backword를 진행한다.     
+
+  + True or False prediction in $D$     
+    > 이러한 Label 예측과 별개로 **input real image**와 **generated fake image**의 진위 여부 또한 잘 구별하게끔 label이 주어진 채로 학습이 진행된다.   
+
++ Generator $G$    
+  + label prediction in $G$     
+    > $G$의 입장에서는 $D$가 fake image를 target domain의 label인 **target label**(**우측 상단의 노란색 $\left\[1, 0, 0, 1, 1\right\]$**)로 판단하게끔 label을 부여해 학습을 진행한다.    
+
+  + True or False prediction in $G$    
+    > 생성 이미지에 대한 진위 여부를 $D$가 잘못 판단하게끔 label을 주어 학습하게 된다.   
+
+  + reconstruction error in $G$     
+    > target-domain에서 다시 input domain으로 역변환한 이미지를 input image와 비교해 **cycle-consistency error**를 계산해 학습하게 된다.   
 
 
 ### Training Strategy     
@@ -207,6 +233,8 @@ $$L_{adv} = {\mathbb{E}}\_{x} \left \[ D_{src}\left(x\right) \right \] - {\mathb
   - downsampling을 위한 2-stride convolution layers     
   - 6 residual blocks    
   - upsampling을 위한 2-stride transposed convolution    
+  - notation : $n_d$ : domain의 개수 , $n_c$ : domain labels의 차원     
+    
 
 <table>
   <td>
@@ -230,6 +258,54 @@ $$L_{adv} = {\mathbb{E}}\_{x} \left \[ D_{src}\left(x\right) \right \] - {\mathb
 
 ## Experiments    
 
++ $Adam\left(\beta_1 = 0.5, \beta_2 = 0.999 \right)$    
++ Data augmentation(flip)    
++ $D$ 5번 update 할 때 $G$ 1번 update   
++ batch size = 16   
+
+> 또한 비교를 위한 모델들은 다중 도메인 학습을 지원하지 않기 때문에 도메인마다 각각 학습했다고 한다.    
+
+### Experimental Results     
+
++ single domain 간 변환만 학습한 모델들보다 multi domain으로 학습한 **StarGAN**이 single domain간 변화 성능에 있어서도 좋은 결과를 보였다.    
+
+<table>
+  <td>
+    <p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/d518548c-7d93-4bdc-bf8e-47abaf033829'></p>
+  </td>
+  <td>
+    <p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/b817813b-cd64-4072-9108-fe071d79cf06'></p>
+  </td>
+</table>       
+
+
+#### Validation Generated Image (throught trained classifier)   
+<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/200bd226-239f-4aab-b33f-86a0ef7f00bd'></p>
+
+#### Effect of Jointly Training     
+<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/d7c1f31b-fb24-4cbb-ac24-ccfc6b4dc725'></p>     
+
+#### Effect of Mask Vector     
+<p align='center'><img src='https://github.com/WestChaeVI/GAN/assets/104747868/739d4887-fd32-49a8-a4ee-72748d9d776f'></p>     
+
+  > mask vector의 효과를 알아보기 위해 적절한 mask vector를 주었을 때와 적절하지 않은 mask vector를 주었을 때를 비교함.   
+  >       
+  > ex) domain label $c$에서 facial expression을 나타내는 vector 1을 주입함. 따라서 Mask vector는 $\left\[0, 1\right\]$이 되어야 적절할 것이다.     
+
+  > 잘못된 mask vector를 사용하면 StarGAN-JNT가 표정 합성에 실패하고 age를 조작하는 것을 확인 할 수 있음.     
+
+------------------------------------------------------------------------------------------------------------------------------------       
+
+## Conclusion    
+
++ **Multi-domain** 간 translation을 **only a Generator** 학습만으로도 가능한 모델 **StarGAN**을 제안.    
+
++ multi-task learning의 일반화 성능 덕분에 하나의 domain만 학습했을 때보다도 더 높은 quality의 이미지를 생성할 수 있었다.   
+
++ 여러 dataset들을 사용할 수 있기 때문에 모든 label을 동시에 처리할 수 있다.    
+
+------------------------------------------------------------------------------------------------------------------------------------       
 
 ## 개인적으로 느낀 점    
 
++ 이전의 생성 모델들은 원본 image가 주어지면 그 원본 이미지와 유사하게 생성해내는 모델이었지만,  StarGAN은 유사하게 원본 이미지를 생성해내는 것 뿐만 아니라 더 나아가 multi-domain label들을 제어해가면서 attribute, attribute value들을 조정하는 것에 맞춰 이미지가 생성되는 것이 새로웠다.      
