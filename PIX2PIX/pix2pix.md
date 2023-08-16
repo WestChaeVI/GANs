@@ -97,7 +97,7 @@ $$L_{pix2pix}\left(G,D\right) = \mathbb{E}\_y \left \[ \log{D\left(x,y\right)} \
     >      
     > GAN loss를 이용한다면 거의 다 이와 같은 방식으로 한다.      
     >      
-    > 자세한 내용은 [Generator Loss 부분](https://github.com/WestChaeVI/GAN/blob/main/SRGAN/srgan.md)      
+    > 자세한 내용은 [Generator Loss 부분](https://github.com/WestChaeVI/GANs/blob/main/SRGAN/srgan.md)      
 
   2. Discriminator를 학습할 때 loss function을 2로 나누어서 Generator보다 더 천천히 학습되도록 만들었다.    
     > 이는 학습 초기에 G가 가짜 이미지를 형편없게 만들다 보니 상대적으로 D의 task가 쉬워 학습이 진행되지 않는 문제를 해결하기 위함이다. ~~사실 기존 GAN에서도 같은 방법을 사용해 특이하진 않다.~~     
