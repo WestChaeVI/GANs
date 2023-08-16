@@ -54,7 +54,7 @@
 + beta1 : 0.5
 + beta2 : 0.9
 + **weight_cliping_limit : 0.01**
-+ **lambda_gp : 10(gradient penalty**    
++ **lambda_gp : 10(gradient penalty)**    
 
 <table style="margin-left: auto; margin-right: auto;">
   <th>
