@@ -3,7 +3,7 @@
 
 ------------------------------------------------------------------------------------------------------------    
 
-## [DCGAN(2015)](https://github.com/WestChaeVI/GAN/blob/main/DCGAN/dcgan.md)     
+## [DCGAN(2015)](https://github.com/WestChaeVI/GANs/blob/main/DCGAN/dcgan.md)     
 
 + Dataset : [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)  
 + Batch_size : 128    
@@ -17,7 +17,7 @@
 
 ------------------------------------------------------------------------------------------------------------       
 
-## [SRGAN(2016)](https://github.com/WestChaeVI/GAN/blob/main/SRGAN/srgan.md)    
+## [SRGAN(2016)](https://github.com/WestChaeVI/GANs/blob/main/SRGAN/srgan.md)    
 
 + Dataset : [VOC2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/)
 + crop_size = 96
@@ -27,7 +27,7 @@
 
 ------------------------------------------------------------------------------------------------------------       
 
-## [Pix2pix(2016)](https://github.com/WestChaeVI/GAN/blob/main/PIX2PIX/pix2pix.md)    
+## [Pix2pix(2016)](https://github.com/WestChaeVI/GANs/blob/main/PIX2PIX/pix2pix.md)    
 
 + Dataset : [facades](https://www.kaggle.com/datasets/balraj98/facades-dataset)
 + Batch_size : 32
@@ -43,7 +43,7 @@
 
 ------------------------------------------------------------------------------------------------------------       
 
-## [WGAN(2017)](https://github.com/WestChaeVI/GAN/blob/main/WGAN/wgan.md)    
+## [WGAN(2017)](https://github.com/WestChaeVI/GANs/blob/main/WGAN/wgan.md)    
 
 + Dataset : [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)  
 + Batch_size : 64    
@@ -79,7 +79,7 @@
 
 ------------------------------------------------------------------------------------------------------------       
 
-## [CycleGAN(2017)](https://github.com/WestChaeVI/GAN/blob/main/CycleGAN/cyclegan.md)    
+## [CycleGAN(2017)](https://github.com/WestChaeVI/GANs/blob/main/CycleGAN/cyclegan.md)    
 
 + Dataset : [horse2zebra](https://www.kaggle.com/datasets/balraj98/horse2zebra-dataset)  
 + Batch_size : 1    
@@ -155,7 +155,7 @@
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
 
-## [StarGAN(2017)](https://github.com/WestChaeVI/GAN/blob/main/STARGAN/stargan.md)    
+## [StarGAN(2017)](https://github.com/WestChaeVI/GANs/blob/main/STARGAN/stargan.md)    
 
 + Dataset : [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)  
 + Batch_size : 64    
