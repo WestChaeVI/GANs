@@ -1,4 +1,4 @@
-# GAN
+# GANs
 ## Generative Adversarial Network paper summarization and implementation
 
 ------------------------------------------------------------------------------------------------------------    
